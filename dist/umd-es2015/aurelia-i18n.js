@@ -235,7 +235,7 @@
                     // anything other than text,prepend,append or html will be added as an attribute on the element.
                     switch (attr) {
                         case "text":
-                            const newChild = aureliaPal.DOM.createTextNode(this.tr(key, params));
+                            const newChild = aureliaPal.DOM.createTextNode(this.tr(key, Object.assign({ interpolation: { escapeValue: false } }, params)));
                             if (node._newChild && node._newChild.parentNode === node) {
                                 node.removeChild(node._newChild);
                             }
