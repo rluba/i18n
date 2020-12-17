@@ -436,17 +436,22 @@ define('aurelia-i18n', ['exports', 'i18next', 'aurelia-logging', 'aurelia-depend
                     _this.paramsChanged(_this.value, newParams, oldParams);
                 };
             }
-            var p = this.params !== null ? this.params.value : undefined;
             this.subscription = this.ea.subscribe(I18N_EA_SIGNAL, function () {
                 _this.service.updateValue(_this.element, _this.value, _this.params !== null ? _this.params.value : undefined);
             });
-            this.service.updateValue(this.element, this.value, p);
+            // Don’t update the translation if params are given, but not yet bound.
+            // (Otherwise, we’ll get warnings about missing variables during interpolation.)
+            // In that case, the initial translation will happen via the paramsChanged handler.
+            if (!this.params || this.params.value !== undefined) {
+                var p = this.params ? this.params.value : undefined;
+                this.service.updateValue(this.element, this.value, p);
+            }
         };
         TCustomAttribute.prototype.paramsChanged = function (newValue, newParams) {
             this.service.updateValue(this.element, newValue, newParams);
         };
         TCustomAttribute.prototype.valueChanged = function (newValue) {
-            var p = this.params !== null ? this.params.value : undefined;
+            var p = this.params ? this.params.value : undefined;
             this.service.updateValue(this.element, newValue, p);
         };
         TCustomAttribute.prototype.unbind = function () {
