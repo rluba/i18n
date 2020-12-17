@@ -238,7 +238,7 @@ class I18N {
                 // anything other than text,prepend,append or html will be added as an attribute on the element.
                 switch (attr) {
                     case "text":
-                        const newChild = DOM.createTextNode(this.tr(key, params));
+                        const newChild = DOM.createTextNode(this.tr(key, Object.assign({ interpolation: { escapeValue: false } }, params)));
                         if (node._newChild && node._newChild.parentNode === node) {
                             node.removeChild(node._newChild);
                         }
